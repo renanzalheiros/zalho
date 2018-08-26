@@ -37,7 +37,7 @@ public final class CountriesListAdapter extends RecyclerView.Adapter<CountriesLi
         return countries.size();
     }
 
-    class CountryViewHolder extends RecyclerView.ViewHolder {
+    public class CountryViewHolder extends RecyclerView.ViewHolder {
 
         private final AdapterCountryRowBinding countryView;
 

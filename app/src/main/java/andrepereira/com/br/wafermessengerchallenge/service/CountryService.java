@@ -23,15 +23,14 @@ import andrepereira.com.br.wafermessengerchallenge.model.Country;
 public class CountryService {
 
     public void fetchCountries(final FetchCountriesDelegate fetchCountriesDelegate) {
-
         new FetchCountriesTask(new CountriesTaskDelegate() {
             @Override
-            public void parse(String json) {
+            public void submit(String json) {
                 try {
-                    fetchCountriesDelegate.show(parseCountriesListJson(json));
+                    fetchCountriesDelegate.bind(parseCountriesListJson(json));
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    fetchCountriesDelegate.show(null);
+                    fetchCountriesDelegate.bind(null);
                 }
             }
         }).execute();
@@ -66,7 +65,7 @@ public class CountryService {
 
     private List<String> getLanguagesFromJson(@NonNull JSONArray languagesJsonArray) throws JSONException {
         List<String> languages = new ArrayList<>();
-        for(int i = 0; i < languagesJsonArray.length(); i++) {
+        for (int i = 0; i < languagesJsonArray.length(); i++) {
             JSONObject languageJson = languagesJsonArray.getJSONObject(i);
             String language = languageJson.getString("name");
             languages.add(language);
@@ -76,10 +75,10 @@ public class CountryService {
 
     private static class FetchCountriesTask extends AsyncTask<Void, Void, Void> {
 
-        private final CountriesTaskDelegate delegate;
+        private final CountriesTaskDelegate countriesDelegate;
 
-        FetchCountriesTask(CountriesTaskDelegate delegate) {
-            this.delegate = delegate;
+        FetchCountriesTask(CountriesTaskDelegate countriesDelegate) {
+            this.countriesDelegate = countriesDelegate;
         }
 
         @Override
@@ -96,7 +95,7 @@ public class CountryService {
                 while ((line = reader.readLine()) != null) {
                     json.append(line);
                 }
-                delegate.parse(json.toString());
+                countriesDelegate.submit(json.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }

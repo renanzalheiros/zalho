@@ -1,5 +1,6 @@
 package andrepereira.com.br.wafermessengerchallenge.ui.countries;
 
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import andrepereira.com.br.wafermessengerchallenge.R;
 import andrepereira.com.br.wafermessengerchallenge.databinding.FragmentCountriesListBinding;
+import andrepereira.com.br.wafermessengerchallenge.ui.swipe.DeleteBroadcast;
 
 public class CountriesListFragment extends Fragment {
 
@@ -23,6 +25,7 @@ public class CountriesListFragment extends Fragment {
         viewModel = new CountriesListFragmentViewModel();
         binding.setViewModel(viewModel);
 
+
         return binding.getRoot();
     }
 
@@ -30,5 +33,10 @@ public class CountriesListFragment extends Fragment {
     public void onStart() {
         super.onStart();
         viewModel.start();
+        DeleteBroadcast deleteBroadcast = new DeleteBroadcast(viewModel);
+        IntentFilter deleteCountry = new IntentFilter("deleteCountry");
+        if (getActivity() != null) {
+            getActivity().registerReceiver(deleteBroadcast, deleteCountry);
+        }
     }
 }

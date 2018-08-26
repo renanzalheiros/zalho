@@ -22,7 +22,7 @@ public class CountriesListFragmentViewModel extends ViewModel {
     public void start() {
         service.fetchCountries(new FetchCountriesDelegate() {
             @Override
-            public void show(List<Country> countries) {
+            public void bind(List<Country> countries) {
                 //Clear countries list before populating with service response
                 countriesList.set(new ArrayList<Country>());
                 if(countries == null) {
@@ -33,4 +33,21 @@ public class CountriesListFragmentViewModel extends ViewModel {
             }
         });
     }
+
+    public void removeFromList(int position) {
+        List<Country> countries = countriesList.get();
+        if(countries != null) {
+            countries.remove(position);
+            countriesList.notifyChange();
+        }
+    }
+
+    public void removeFromList(Country country) {
+        List<Country> countries = countriesList.get();
+        if(countries != null) {
+            countries.remove(country);
+            countriesList.notifyChange();
+        }
+    }
+
 }
